@@ -1,0 +1,43 @@
+solution.txt:
+
+Thread ID-4 is the last thread.
+
+Thread 1 ID-139647312418368: valid
+
+Thread 2 ID-139647304025664: valid
+
+Thread 3 ID-139647295632960: valid
+
+Thread 4 ID-4294967296: valid
+
+There are 27 valid rows, columns, and sub-grids, thus the solution is valid.
+
+
+solution1.txt:
+
+Thread ID-4 is the last thread.
+
+Thread 1 ID-140713752282688: Sub-Grid 1, Row 2, Sub-Grid 2, Row 3, Sub-Grid 3, is/are invalid
+
+Thread 2 ID-140713743889984: Row 4, Sub-Grid 4, Row 5, Sub-Grid 5, Row 6, Sub-Grid 6, is/are invalid
+
+Thread 3 ID-140713735497280: Row 7, Row 8, Sub-Grid 8, Row 9, Sub-Grid 9, is/are invalid
+
+Thread 4 ID-4294967296: column 1, column 2, column 3, column 4, column 5, column 6, column 7, column 8, column 9, is/are invalid
+
+There are 2 valid rows, columns, and sub-grids, thus the solution is invalid.
+
+
+solution2.txt:
+
+Thread ID-4 is the last thread.
+
+Thread 1 ID-140333189776960: Row 1, Sub-Grid 1, Row 2, Sub-Grid 2, Row 3, Sub-Grid 3, is/are invalid
+
+Thread 2 ID-140333181384256: Row 4, Sub-Grid 5, Row 6, Sub-Grid 6, is/are invalid
+
+Thread 3 ID-140333172991552: Row 7, Sub-Grid 7, Row 8, Sub-Grid 8, Row 9, Sub-Grid 9, is/are invalid
+
+Thread 4 ID-4294967296: column 1, column 2, column 3, column 4, column 5, column 6, column 7, column 8, is/are invalid
+
+There are 3 valid rows, columns, and sub-grids, thus the solution is invalid.

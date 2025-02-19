@@ -1,0 +1,136 @@
+CLASS FiaDataEntry
+
+    DESCRIPTION: Contains the main method for Program One and is used to create a CSV of FIA Grand Prix race data.
+
+    METHOD main:
+        ALGORITHM:
+            PRINT "Welcome to the FIA F1 Data Entry Program"
+            numTeams = INPUT WITH PROMPT "Select number of Teams to save (remember two drivers per team): "
+            numDrivers = numTeams * 2
+            driverArray = CREATE ARRAY OF Driver WITH LENGTH numDrivers
+            tempTeamName = NULL
+            tempCarCode = NULL
+
+            PRINT "Please enter the following:"           
+            PRINT "Enter the Grand Prix the teams are racing in. "
+            grandPrix = CALL THISCLASS METHOD promptForPrix
+            FOR i BETWEEN 0 AND numDrivers - 1 INC BY 1:
+                driverArray[i] = CREATE NEW Driver WITH DEFAULT CONSTRUCTOR
+                IF i MODULO 2 EQUALS 0:
+                    tempTeamName = CALL THISCLASS METHOD promptForTeam
+
+                    tempCarCode = CALL THISCLASS METHOD promptForCar     
+                ELSE: 
+                    PRINT "Team Name: " + tempTeamName
+                    PRINT "Car Code: " + tempCarCode
+                    
+                CALL driverArray[i] METHOD setTeamName WITH ARGUMENT TeamName
+                CALL driverArray[i] METHOD setCarCode WITH ARGUMENT tempCarCode
+                CALL driverArray[i] METHOD setDriverName WITH ARGUMENT (CALL THISCLASS METHOD promptForDriver)
+                CALL driverArray[i] METHOD setGrandPrix WITH ARGUMENT grandPrix
+                CALL driverArray[i] METHOD setPosFinish WITH ARGUMENT (CALL THISCLASS METHOD promptForPos)
+                CALL driverArray[i] METHOD setFastestLap WITH ARGUMENT (CALL THISCLASS METHOD promptForTime)
+
+            PRINT "This is the current data: "
+            FOR i BETWEEN 1 AND numDrivers INC BY 1:
+                PRINT "Driver " + i + ": " + driverArray[i-1] METHOD toString
+
+            editSelection = INPUT WITH PROMPT "If you would like to edit any data before saving to CSV, enter the driver number to edit. Otherwise, enter 0."
+
+            WHILE editSelection DOES NOT EQUAL 0:
+                fieldSelection = INPUT WITH PROMPT "enter 1 to edit Team Name, 2 to edit Car Code, 3 to edit Driver Name, 4 to edit Finishing Position, 5 to edit Fastest Lap, 6 to edit Grand Prix for all drivers: "
+                FROM THE FOLLOWING CASES OF fieldSelection:
+                    CASE 1: 
+                        CALL driverArray[editSelection - 1] METHOD setTeamName WITH ARGUMENT (CALL THISCLASS METHOD promptForTeam)
+                    CASE 2: 
+                        CALL driverArray[editSelection - 1] METHOD setCarCode WITH ARGUMENT (CALL THISCLASS METHOD promptForCar)
+                    CASE 3: 
+                        CALL driverArray[editSelection - 1] METHOD setDriverName WITH ARGUMENT (CALL THISCLASS METHOD promptForDriver)
+                    CASE 4: 
+                        CALL driverArray[editSelection - 1] METHOD setPosFinish WITH ARGUMENT (CALL THISCLASS METHOD promptForPos)
+                    CASE 5: 
+                        CALL driverArray[editSelection - 1] METHOD setFastestLap WITH ARGUMENT (CALL THISCLASS METHOD promptForTime)
+                    CASE 6: 
+                        newGrandPrix = CALL THISCLASS promptForPrix
+                        FOR i BETWEEN 0 AND numDrivers - 1 INC BY 1: 
+                            CALL driverArray[i] METHOD setGrandPrix WITH ARGUMENT newGrandPrix
+                            
+                    DEFAULT CASE: 
+                        PRINT "Invalid selection. Try again. "
+
+                PRINT "This is the current data: "
+                FOR i BETWEEN 1 AND numDrivers INC BY 1:
+                    PRINT "Driver " + i + ": " + driverArray[i-1] METHOD toString
+
+                editSelection = INPUT WITH PROMPT "If you would like to edit any more data before saving to CSV, enter the driver number. Otherwise, enter 0."
+
+            csvName = INPUT WITH PROMPT "enter CSV file name: " 
+
+            OPEN currFile WITH NAME csvName + ".csv" FOR WRITING
+
+            WRITE "TeamName, CarCode, DriverName, GrandPrix, PositionFinished, FastestLap" AT LINE 0 IN FILE currFile
+
+            FOR i BETWEEN 0 AND numDrivers-1 INC BY 1:
+                WRITE (CALL driverArray[i] METHOD getTeamName) + ", " + (CALL driverArray[i] METHOD getCarCode) + ", " + (CALL driverArray[i] METHOD getDriverName) + ", " + (CALL driverArray[i] METHOD getGrandPrix) + ", " + (CALL driverArray[i] METHOD getPosFinish) + ", " + (CALL driverArray[i] METHOD getFastestLap) AT LINE i + 1 IN FILE currFile
+
+            CLOSE currFile
+
+    METHOD promptForTeam:
+    IMPORT:     Nothing
+    EXPORT:     teamName (String)
+    FUNCTIONALITY: Prompts for Team Name with Rule checking.
+    ALGORITHM:
+        teamName = INPUT WITH PROMPT "Enter Next Team Name: "
+        WHILE LENGTH OF teamName IS 0:
+            teamName = INPUT WITH PROMPT "Please enter a valid team name: "
+        EXPORT teamName
+
+    METHOD promptForCar:
+    IMPORT:     Nothing
+    EXPORT:     carCode (String)
+    FUNCTIONALITY: Prompts for Car Code with Rule checking.
+    ALGORITHM: 
+        carCode = INPUT WITH PROMPT "Car Code: "
+        WHILE LENGTH OF carCode IS 0:
+            carCode = INPUT WITH PROMPT "Please enter a valid car code: " 
+        EXPORT carCode
+
+    METHOD promptForDriver:
+    IMPORT:     Nothing
+    EXPORT:     driverName (String)
+    FUNCTIONALITY: Prompts for Driver name with Rule checking.
+    ALGORITHM: 
+        driverName = INPUT WITH PROMPT "Driver Name: "
+        WHILE LENGTH OF driverName IS 0:
+            driverName = INPUT WITH PROMPT "Please enter a valid driver name: "
+        EXPORT driverName
+
+    METHOD promptForPrix: 
+    IMPORT:     Nothing
+    EXPORT:     grandPrix (String)
+    FUNCTIONALITY: Prompts for Grand Prix with Rule checking.
+    ALGORITHM:
+        grandPrix = INPUT WITH PROMPT "Grand Prix: "
+        WHILE LENGTH OF grandPrix IS 0:
+            grandPrix = INPUT WITH PROMPT "Please enter a valid Grand Prix: "
+        EXPORT grandPrix
+    
+    METHOD promptForPos:
+    IMPORT:     Nothing
+    EXPORT:     posFinish (int)
+    FUNCTIONALITY: Prompts for Finishing Position with Rule checking.
+    ALGORITHM:
+        posFinish = INPUT WITH PROMPT "Position Finished: "
+        WHILE posFinish IS NOT integer OR posFinish EQUALS 0:
+            posFinish = INPUT WITH PROMPT "Please enter a valid finishing position: "
+        EXPORT posFinish
+
+    METHOD promptForTime:
+    IMPORT:     Nothing
+    EXPORT:     lapTime (double)
+    FUNCTIONALITY: Prompts for Lap Time with Rule checking.
+    ALGORITHM:
+        lapTime = INPUT WITH PROMPT "Fastest Lap Time (seconds): "
+        WHILE lapTime IS NOT double OR lapTime < 0:
+            lapTime = INPUT WITH PROMPT "Please enter a valid lap time: "
+        EXPORT lapTime

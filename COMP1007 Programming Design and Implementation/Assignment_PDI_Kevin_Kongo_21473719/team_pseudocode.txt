@@ -1,0 +1,135 @@
+CLASS Team
+
+    DESCRIPTION: initializes, stores, and manipulates attributes of the Team class. Used to organise drivers who belong to the same team.
+
+    CLASS FIELDS:
+        teamName        (String)
+        driverOne       (Driver)
+        driverTwo       (Driver)
+
+    CONSTRUCTOR WITH PARAMETERS:
+        IMPORT:     pDriverOne (Driver), pDriverTwo (Driver)
+        EXPORT:     Nothing
+        FUNCTIONALITY: Instantiate an object of Team class with imported values. uses default initializer if the teamName in each Driver is not equal.
+                       Uses the teamName attribute in the passed Drivers to initialize the teamName attribute in the Team class.
+        ALGORITHM:
+            IF (CALL pDriverOne METHOD getTeamName) DOES NOT EQUAL (CALL pDriverTwo METHOD getTeamName):
+                CALL DEFAULT CONSTRUCTOR
+            ELSE:
+                teamName = CALL pDriverOne METHOD getTeamName
+                driverOne = pDriverOne
+                driverTwo = pDriverTwo
+
+    COPY CONSTRUCTOR:
+        IMPORT: pTeam (Team)
+        EXPORT: Nothing
+        FUNCTIONALITY: Instantiate an object of Team class using fields from another object of type Team class
+        ALGORITHM:
+            teamName = CALL pTeam METHOD getTeamName
+            driverOne = CALL pTeam METHOD getDriverOne
+            driverTwo = CALL pTeam METHOD getDriverTwo
+
+    DEFAULT CONSTRUCTOR: 
+        IMPORT: Nothing
+        EXPORT: Nothing
+        FUNCTIONALITY: Instantiate an object of Team class with default values.
+        ALGORITHM: 
+            teamName = "DefaultTeam"
+            driverOne = CREATE NEW Driver WITH DEFAULT CONSTRUCTOR
+            driverTwo = CREATE NEW Driver WITH DEFAULT CONSTRUCTOR
+
+    ACCESSOR: getTeamName
+    IMPORT: Nothing 
+    EXPORT: teamName (String)
+    ALGORITHM: 
+        EXPORT teamName
+
+    ACCESSOR: getDriverOne
+    IMPORT: Nothing 
+    EXPORT: driverOne (Driver)
+    ALGORITHM: 
+        EXPORT driverOne
+
+    ACCESSOR: getDriverTwo
+    IMPORT: Nothing 
+    EXPORT: driverTwo (Driver)
+    ALGORITHM: 
+        EXPORT driverTwo
+
+    MUTATOR: setDriverOne   
+    IMPORT: pDriverOne (Driver)
+    EXPORT: Nothing
+    FUNCTIONALITY: updates the state of driverOne to pDriverOne
+    ALGORITHM:
+        IF pDriverOne IS NOT NULL:
+            driverOne = pDriverOne
+
+    MUTATOR: setDriverTwo   
+    IMPORT: pDriverTwo (Driver)
+    EXPORT: Nothing
+    FUNCTIONALITY: updates the state of driverTwo to pDriverTwo
+    ALGORITHM:
+        IF pDriverTwo IS NOT NULL:
+            driverTwo = pDriverTwo
+
+    MUTATOR: setTeamName
+    IMPORT: pTeamName (String)
+    EXPORT: Nothing
+    FUNCTIONALITY: updates the state of teamName to pTeamName
+    ALGORITHM:
+        IF LENGTH OF pTeamName IS NOT 0: 
+            teamName = pTeamName
+
+    METHOD: toString
+    IMPORT: Nothing
+    EXPORT: stringOut (String)
+    FUNCTIONALITY: returns a string describing the state of all class instance variables
+    ALGORITHM:
+        stringOut = "Team: " + teamName + ", Driver One: " + (CALL driverOne METHOD getDriverName) + ", Driver Two: " + (CALL driverTwo METHOD getDriverName)
+        EXPORT stringOut
+
+    METHOD: equals
+    IMPORT: inObject (Object)
+    EXPORT: isEqual (boolean)
+    FUNCTIONALITY: compares the instance variables of this object and another object with type Team, and returns true if all fields are equivalent
+    ALGORITHM:
+        isEqual = FALSE
+        IF inObject IS TYPE Team:
+            teamObject = CHANGE inObject TO TYPE Team
+            IF CALL teamObject METHOD getTeamName EQUALS teamName:
+                IF CALL teamObject METHOD getDriverOne EQUALS driverOne:
+                    IF CALL teamObject METHOD getDriverTwo EQUALS driverTwo:
+                        isEqual = TRUE
+
+        EXPORT isEqual
+
+    METHOD: getNumCompleted
+    IMPORT: Nothing
+    EXPORT: numCompleted (integer)
+    FUNCTIONALITY: Returns the number of drivers in the team that completed the race.
+    ALGORITHM: 
+        numCompleted = 0
+        IF CALL driverOne METHOD getPosFinish IS POSITIVE:
+            numCompleted = numCompleted + 1 
+        IF CALL driverTwo METHOD getPosFinish IS POSITIVE:
+            numCompleted = numCompleted + 1
+        
+        EXPORT numCompleted
+        
+    METHOD: getLapSum
+    IMPORT: Nothing
+    EXPORT: lapSum (double)
+    FUNCTIONALITY: returns the sum of both driver's fastest lap. If they did not complete, their time is 205.50 seconds.
+    ALGORITHM:
+        lapSum = 0
+        IF CALL driverOne METHOD getPosFinish IS NEGATIVE:
+            lapSum = lapSum + 205.50
+        ELSE:
+            lapSum = lapSum + CALL driverOne METHOD getFastestLap
+        
+        IF CALL driverTwo METHOD getPosFinish IS NEGATIVE:
+            lapSum = lapSum + 205.50
+        ELSE:
+            lapSum = lapSum + CALL driverOne METHOD getFastestLap
+
+        EXPORT lapSum 

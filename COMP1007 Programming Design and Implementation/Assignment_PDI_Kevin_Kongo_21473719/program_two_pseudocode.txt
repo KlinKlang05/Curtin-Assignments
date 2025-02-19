@@ -1,0 +1,145 @@
+CLASS FiaAnalysis
+
+    DESCRIPTION: Contains the main method for Program Two and is used to analyse FIA Grand Prix race data stored in a CSV file.
+
+    METHOD main: 
+        ALGORITHM:
+            PRINT "Welcome to the FIA F1 Analysis Program"
+            fileName = INPUT WITH PROMPT "Enter CSV data file name: "
+            csvArray = (CALL getCSVData WITH ARGUMENT filename) 
+            driverCount = (LENGTH OF csvArray) - 1
+
+            IF driverCount IS EVEN: 
+
+                driverArray = CREATE ARRAY OF Driver WITH LENGTH driverCount
+                FOR i BETWEEN 1 AND driverCount INC BY 1:
+                    driverArray[i] = CREATE NEW Driver WITH ARGUMENTS csvArray[i][0], csvArray[i][1], csvArray[i][2], csvArray[i][3], csvArray[i][4], csvArray[i][5]
+
+                teamArray = CREATE ARRAY OF Team WITH LENGTH driverCount / 2
+                
+                incorrectPairs = FALSE
+                FOR i BETWEEN 0 AND (driverCount / 2) - 1 INC BY 1:
+                    IF (CALL driverArray[i*2] METHOD getTeamName) EQUALS (CALL driverArray[i*2+1] METHOD getTeamName):
+                        teamArray[i] = CREATE NEW Team WITH ARGUMENTS driverArray[i*2], driverArray[i*2 + 1]
+                    ELSE: 
+                        incorrectPairs = TRUE
+                
+                IF incorrectPairs IS FALSE: 
+
+                    CALL THISCLASS METHOD sortDriverArray WITH ARGUMENT driverArray
+                    CALL THISCLASS METHOD sortTeamArray WITH ARGUMENT teamArray
+
+                    selection = INPUT WITH PROMPT "Enter 1 for all teams analysis or 2 for single team. Enter 0 to exit: "
+
+                    WHILE selection DOES NOT EQUAL 0:
+                        IF selection EQUALS 1:  
+                            PRINT "The following Team Data is displayed in order of fastest to slowest. Each team consists of two drivers."
+                            FOR i BETWEEN 0 AND driverCount / 2 - 1 INC BY 1:
+                                FROM THE FOLLOWING CASES OF CALL teamArray[i] METHOD getNumCompleted:
+                                    CASE 0:
+                                        PRINT "This Team did not complete race: "
+                                    CASE 1:
+                                        PRINT "Only One Driver completed the race in this team. The one that did not complete the race was assigened a time of 205.5 seconds."
+                                    CASE 2: 
+                                        PRINT "Both Drivers completed the race: "
+                                    DEFAULT CASE: 
+                                        PRINT "It's literally impossible to print this. How..? You got an error somewhere buddy. "
+                                        
+                                PRINT "Driver One: " + (CALL (CALL teamArray[i] METHOD getDriverOne) METHOD toString)
+                                PRINT "Driver Two: " + (CALL (CALL teamArray[i] METHOD getDriverTwo) METHOD toString)
+                                PRINT NEWLINE
+
+                            PRINT "Fastest Drivers descending order. Drivers that did not complete the race are given a time of 205.5 seconds: "
+                            FOR i BETWEEN 0 AND driverCount - 1 INC BY 1:
+                                PRINT CALL driverArray[i] METHOD toString
+                            
+                            PRINT "Fastest Drivers ascending order. Drivers that did not complete the race are given a time of 205.5 seconds: "
+                            FOR i BETWEEN driverCount - 1 AND 0 DEC BY 1:
+                                PRINT CALL driverArray[i] METHOD toString
+
+                        ELSE IF selection EQUALS 2:
+                            carCodeSelection = INPUT WITH PROMPT "Enter team car code to filter by: "
+                            WHILE LENGTH OF carCodeSelection IS 0:
+                                carCodeSelection = INPUT WITH PROMPT "Please enter a valid car code: " 
+                            foundSomething = FALSE
+                            FOR i BETWEEN 0 AND driverCount - 1 INC BY 1:     
+                                IF (CALL driverArray[i] METHOD getCarCode) EQUALS carCodeSelection:
+                                    foundSomething = TRUE
+                                    PRINT (CALL driverArray[i].toString)
+
+                            IF foundSomething IS FALSE:
+                                PRINT "Could not find any drivers with that car code. "
+
+
+                        ELSE:
+                            PRINT "Invalid selection. Try again. "
+
+                        selection = INPUT WITH PROMPT "Enter 1 for all team analysis or 2 for single team. Enter 0 to exit: "
+                
+                ELSE: 
+                    PRINT "Each pair of entries should have the same team. No Single Driver Teams. Try Importing a Correct CSV."
+            ELSE: 
+                PRINT "Uneven entries in CSV file. This indicates there are not two drivers per team in the CSV. Try Importing a Correct CSV."
+
+
+    METHOD getCSVData:
+        IMPORT:     pFileName (String)
+        EXPORT:     csvArray (Array of (Array of String))
+        FUNCTIONALITY: takes a filename and returns a 2D array containing each entry from the CSV file. Assumes pFileName includes the .csv extension.
+        ALGORITHM: 
+            OPEN currFile WITH NAME pFileName FOR READING
+            fileLength = 0
+            READ line FROM currFile
+            WHILE line IS NOT END OF FILE
+                fileLength = fileLength + 1
+                READ line FROM currFile
+
+            CLOSE currFile
+
+            csvArray = CREATE ARRAY OF (ARRAY OF String WITH LENGTH 6) WITH LENGTH fileLength
+
+            OPEN currFile WITH NAME pFileName FOR READING
+            FOR i BETWEEN 0 AND fileLength - 1 INC BY 1:
+                csvArray[i] = CREATE ARRAY OF String BY SPLITTING (READ line FROM currFile) WITH REGEX ","
+            CLOSE currFile    
+
+            EXPORT csvArray
+
+    METHOD sortTeamArray:
+        IMPORT:     pTeamArray (Team Array)
+        EXPORT:     Nothing
+        FUNCTIONALITY: Using bubblesort, Sorts an array of Team objects based on each team's sum of fastest lap times for both drivers. Sorts by ascending time.
+        ALGORITHM:
+            length = LENGH OF pTeamArray
+            FOR i BETWEEN 0 AND length - 1 INC BY 1:
+                FOR j BETWEEN 0 AND length - i - 1 INC BY 1:
+                    IF (CALL pTeamArray[j] METHOD getLapSum) > (CALL pTeamArray[j + 1] METHOD getLapSum):
+                        temp = pTeamArray[j]
+                        pTeamArray[j] = pTeamArray[j+1]
+                        pTeamArray[j+1] = temp
+
+
+    METHOD sortDriverArray:
+        IMPORT:     pDriverArray (Driver Array)
+        EXPORT:     Nothing
+        FUNCTIONALITY:  using bubblesort, Sorts an array of Driver objects based on Driver's fastest lap time. Sorts by ascending time. 
+                        Any Racer that did not finish the race is given a time of 205.5 seconds and sorted accordingly.
+        ALGORITHM:
+            length = LENGH OF pDriverArray
+            FOR i BETWEEN 0 AND length - 1 INC BY 1:
+                FOR j BETWEEN 0 AND length - i - 1 INC BY 1:
+                    IF (CALL pDriverArray[j] METHOD getPosFinish) IS NEGATIVE:
+                        timeA = 205.5
+                    ELSE 
+                        timeA = CALL pDriverArray[j] METHOD getFastestLap
+                    
+                    IF (CALL pDriverArray[j+1] METHOD getPosFinish) IS NEGATIVE:
+                        timeB = 205.5
+                    ELSE 
+                        timeB = CALL pDriverArray[j+1] METHOD getFastestLap
+
+                    IF timeA > timeB:
+                        temp = pDriverArray[j]
+                        pDriverArray[j] = pDriverArray[j+1]
+                        pDriverArray[j+1] = temp
+

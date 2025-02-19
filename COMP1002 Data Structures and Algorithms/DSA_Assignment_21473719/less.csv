@@ -1,0 +1,7 @@
+ID,name,category,Location,Rating,Connections
+12345,SuperMart,Grocery,Level 1 near the food court,4,54321,23456
+54321,FreshMart,Grocery,Level 2 next to the escalator,3,12345,34567
+23456,BookZone,Books,Level 1 opposite the cinema,5,12345,45678
+34567,BookWorm,Books,Level 2 in the middle of the mall,4,54321,67890
+45678,PetWorld,Pets,Level 1 near the entrance,3,23456
+67890,PetCare,Pets,Level 2 at the end of the mall,4,34567

@@ -1,0 +1,31 @@
+ID,name,category,Location,Rating,Connections
+12345,SuperMart,Grocery,Level 1 near the food court,4,54321,23456
+54321,FreshMart,Grocery,Level 2 next to the escalator,3,12345,34567
+23456,BookZone,Books,Level 1 opposite the cinema,5,12345,45678,12468
+34567,BookWorm,Books,Level 2 in the middle of the mall,4,65432,54321,67890
+45678,PetWorld,Pets,Level 1 near the entrance,3,23456,78901
+67890,PetCare,Pets,Level 2 at the end of the mall,4,57913,34567,12468
+78901,FlowerPower,Flowers,Level 1 beside the fountain,5,45678,34567,87654
+98765,Blossom,Flowers,Level 2 near the elevator,4,87654
+87654,GameStop,Games,Level 2 next to the ATM machine,3,98765,65432
+76543,GameZone,Games,Level 1 in front of the toy store,5,65432,10987,98765
+65432,BakeHouse,Bakery,Games and Toys Level 1 near the craft store,4,76543,43210
+43210,CakeShop,Bakery,Level 2 near the bakery,3,18642,65432,21098
+21098,CoffeeCorner,Coffee,Level 2 near the jewelry store,4,43210,10987
+10987,CoffeeBean,Coffee,Level 1 near the coffee shop,5,21098,19876
+19876,MusicBox,Music,Level 2 near the sports store,4,10987,98765
+13579,MusicLand,Music,Level 1 near the electronics store,3,24680,35791
+24680,Sporty,Sports,Level 2 near the pet store,4,13579,46802
+35791,SportZone,Sports,Level 1 near the fountain,5,13579,57913
+46802,Crafty,Crafts,Food Level 2 near the pizza place,4,24680,68024
+57913,CraftLand,Crafts,Level 1 near the bakery,3,35791,79135
+68024,PizzaHut,Pizza,Level 2 near the elevator,4,46802,34567
+79135,PizzaKing,Pizza,Level 1 near the craft store,5,57913,34567,86420
+86420,Fashionista,Clothing,Level 2 near the food court,3,64208,34567
+64208,FashionZone,Clothing,Level 1 near the cinema,4,86420,64208,80642
+42086,ShoeShine,Shoes,Level 2 near the escalator,5,64208,80642
+18642,ShoeLand,Shoes,Level 1 near the entrance,4,42086,24806,12468
+12468,CandyCrush,Candy,Level 2 in the middle of the mall,3,18642,64280
+64280,CandyLand,Candy,Level 1 next to the ice cream shop,5,12468
+24806,ToyStory,Toys,Level 2 at the end of the mall,4,64280
+80642,ToyZone,Toys,Level 1 beside the fountain,3,24806,12468

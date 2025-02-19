@@ -1,0 +1,189 @@
+CLASS Driver
+
+    DESCRIPTION: initializes, stores, and manipulates attributes of the Driver class 
+
+    CLASS FIELDS:
+        teamName    (String)
+        carCode     (String)
+        driverName  (String)
+        grandPrix   (String)
+        posFinish   (integer)
+        fastestLap  (double)
+    
+    CONSTRUCTOR WITH PARAMETERS:
+        IMPORT:     pTeamName (String), pCarCode (String), pDriverName (String), pGrandPrix (String),
+                    pPosFinish (integer), pFastestLap (double)
+        EXPORT: Nothing
+        FUNCTIONALITY: Instantiate an object of Driver class with imported values. Any invalid entries are initialized with default values.
+        ALGORITHM:
+            IF LENGTH OF pTeamName IS NOT 0: 
+                teamName = pTeamName
+            ELSE: 
+                teamName = "DefaultTeam"
+
+            IF LENGTH OF pCarCode IS NOT 0: 
+                carCode = pCarCode
+            ELSE: carCode = "DefaultCar"
+
+            IF LENGTH OF pDriverName IS NOT 0: 
+                driverName = pDriverName
+            ELSE: 
+                driverName = "DefaultDriver"
+
+            IF LENGTH OF pGrandPrix IS NOT 0: 
+                grandPrix = pGrandPrix
+            ELSE:
+                grandPrix = "DefaultGrandPrix"
+            
+            IF pPosFinish IS NOT 0:
+                posFinish = pPosFinish
+            ELSE: 
+                posFinish = 1
+
+            IF pFastestLap > 0:
+                fastestLap = pFastestLap
+            ELSE: 
+                fastestLap = 0.0
+
+    COPY CONSTRUCTOR:
+        IMPORT: pDriver (Driver)
+        EXPORT: Nothing
+        FUNCTIONALITY: Instantiate an object of Driver class using fields from another object of type Driver class
+        ALGORITHM:
+            teamName = CALL pDriver METHOD getTeamName
+            carCode = CALL pDriver METHOD getCarCode
+            driverName = CALL pDriver METHOD getDriverName
+            grandPrix = CALL pDriver METHOD getGrandPrix
+            posFinish = CALL pDriver METHOD getPosFinish
+            fastestLap = CALL pDriver METHOD getFastestLap
+
+    DEFAULT CONSTRUCTOR: 
+        IMPORT: Nothing
+        EXPORT: Nothing
+        FUNCTIONALITY: Instantiate an object of Driver class with default values.
+        ALGORITHM: 
+            teamName = "DefaultTeam"
+            carCode = "DefaultCar"
+            driverName = "DefaultDriver"
+            grandPrix = "DefaultGrandPrix"
+            posFinish = 0
+            fastestLap = 0.0
+
+    ACCESSOR: getTeamName
+    IMPORT: Nothing 
+    EXPORT: teamName (String)
+    ALGORITHM: 
+        EXPORT teamName
+    
+    ACCESSOR: getCarCode
+    IMPORT: Nothing
+    EXPORT: carCode (String)
+    ALGORITHM:
+        EXPORT carCode
+    
+    ACCESSOR: getDriverName
+    IMPORT: Nothing
+    EXPORT: driverName (String)
+    ALGORITHM:
+        EXPORT driverName
+
+    ACCESSOR: getGrandPrix
+    IMPORT: Nothing
+    EXPORT: grandPrix (String)
+    ALGORITHM:
+        EXPORT grandPrix
+
+    ACCESSOR: getPosFinish
+    IMPORT: Nothing
+    EXPORT: posFinish (integer)
+    ALGORITHM:
+        EXPORT posFinish
+
+    ACCESSOR: getFastestLap
+    IMPORT: Nothing
+    EXPORT: fastestLap (double)
+    ALGORITHM:
+        EXPORT fastestLap
+
+    MUTATOR: setTeamName
+    IMPORT: pTeamName (String)
+    EXPORT: Nothing
+    FUNCTIONALITY: updates the state of teamName to pTeamName
+    ALGORITHM:
+        IF LENGTH OF pTeamName IS NOT 0: 
+            teamName = pTeamName
+    
+    MUTATOR: setCarCode
+    IMPORT: pCarCode (String)
+    EXPORT: Nothing
+    FUNCTIONALITY: updates the state of carCode to pCarCode
+    ALGORITHM:
+        IF LENGTH OF pCarCode IS NOT 0: 
+            carCode = pCarCode
+
+    MUTATOR: setDriverName
+    IMPORT: pDriverName (String)
+    EXPORT: Nothing
+    FUNCTIONALITY: updates the state of driverName to pDriverName
+    ALGORITHM:
+        IF LENGTH OF pDriverName IS NOT 0: 
+            driverName = pDriverName
+
+    MUTATOR: setGrandPrix
+    IMPORT: pGrandPrix (String)
+    EXPORT: Nothing
+    FUNCTIONALITY: updates the state of grandPrix to pGrandPrix
+    ALGORITHM:
+        IF LENGTH OF pGrandPrix IS NOT 0: 
+            grandPrix = pGrandPrix
+
+    MUTATOR: setPosFinish
+    IMPORT: pPosFinish (integer)
+    EXPORT: Nothing
+    FUNCTIONALITY: updates the state of posFinish to pPosFinish. Position 0 is not accepted.
+    ALGORITHM:
+        IF pPosFinish IS NOT 0:
+            posFinish = pPosFinish
+
+    MUTATOR: setFastestLap
+    IMPORT: pFastestLap (double)
+    EXPORT: Nothing
+    FUNCTIONALITY: updates the state of fastestLap to pFastestLap
+    ALGORITHM:
+        IF pFastestLap IS TYPE double AND pFastestLap > 0:
+            fastestLap = pFastestLap
+
+    METHOD: toString
+    IMPORT: Nothing
+    EXPORT: stringOut (String)
+    FUNCTIONALITY: returns a string describing the state of all class instance variables
+    ALGORITHM:
+        stringOut = "Team: " + teamName + ", Car Code: " + carCode + ", Driver Name: " + driverName + ", Grand Prix: " + grandPrix + ", Position Finished: " + posFinish + ", Fastest Lap (seconds): " + fastestLap
+        EXPORT stringOut
+
+    METHOD: equals
+    IMPORT: inObject (Object)
+    EXPORT: isEqual (boolean)
+    FUNCTIONALITY: compares the instance variables of this object and another object with type Driver, and returns true if all fields are equivalent
+    ALGORITHM:
+        isEqual = FALSE
+        IF inObject IS TYPE Driver:
+            inDriver = CHANGE inObject TO TYPE Driver
+            IF CALL inDriver METHOD getTeamName EQUALS teamName:
+                IF CALL inDriver METHOD getCarCode EQUALS carCode:
+                    IF CALL inDriver METHOD getDriverName EQUALS driverName:
+                        IF CALL inDriver METHOD getGrandPrix EQUALS grandPrix:
+                            IF CALL inDriver METHOD getPosFinish EQUALS posFinish:
+                                IF CALL inDriver METHOD getFastestLap EQUALS fastestLap:
+                                    isEqual = TRUE
+
+        EXPORT isEqual
+
+
+    
+                                
+
+
+
+    
+    

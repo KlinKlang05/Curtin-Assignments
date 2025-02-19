@@ -1,0 +1,98 @@
+Number_Of_Top_Lights,3
+Number_Of_Bottom_Lights,2
+Laser_Position,400
+Smoke_Machine_Side,r
+Laser_Split,6
+Laser_Spread,40
+consistent_wait,4
+
+# consistent_wait is the amount of frames to render before moving to the next line
+# Format: <function(arguments)>
+# Turn smoke machine off or on: smoke.state = not smoke.state
+# Change consistent_wait: consisten_wait = <new wait frames>
+# See each class declaration and documentation to see which methods modify properties.
+# Add a line with a number between each function to make the program wait that number of frames.
+
+# instances created in the driver code are as follows:
+# mainStage = generate_stage()
+     smoke = smokeMachine(mainStage, csvContent, formatted[3][1])
+     renderBackDrop(mainStage)
+     renderStage(mainStage)
+     band = bandAnimate(mainStage)
+     lightObjects = np.empty(8, dtype=object)
+     # create top lights
+     for c, lightPosition in enumerate(np.linspace(40,460,formatted[0][1])):
+         lightObjects[c] = light(lightPosition, mainStage, 'purple', 't')
+     allTopLights = lightSeries(lightObjects)
+ 
+     # create bottom lights
+     for c, lightPosition in enumerate(np.linspace(40,460,formatted[1][1])):
+         lightObjects[c] = light(lightPosition, mainStage, 'purple', 't')
+     allBottomLights = lightSeries(lightObjects)
+      # create two lasers
+#      allLasers = laserSeries([laser(mainStage, 'l', int(formatted[2][1]), 'blue', formatted[4][1], formatted[5][1]), laser(mainStage, 'r', int(formatted[2][1]), 'blue', formatted[4][1], formatted[5][1])])   
+
+# write commands below:
+allBottomLights.setColour('white', 'all')
+allTopLights.setFocus(80, [0,2])
+allTopLights.setDirection(25, [0])
+allTopLights.setDirection(-25, [2])
+allTopLights.setColour('orange', 'all')
+allBottomLights.setDirection(30,[0])
+allBottomLights.setDirection(-30,[1])
+smoke.state = not smoke.state
+2
+allLasers.setColour('teal')
+allLasers.setDirection(-2)
+2
+allLasers.setColour('orange')
+allLasers.setDirection(-7)
+2
+allLasers.setColour('white')
+allLasers.setDirection(-12)
+2
+allLasers.setColour('tomato')
+allLasers.setDirection(-17)
+2
+allLasers.setColour('gold')
+allLasers.setDirection(-22)
+smoke.state = not smoke.state
+2
+allLasers.setColour('yellowgreen')
+allLasers.setDirection(-27)
+2
+allLasers.setColour('slategray')
+allLasers.setDirection(-32)
+2
+allLasers.setColour('plum')
+allLasers.setDirection(-37)
+2
+allLasers.setColour('purple')
+allLasers.setDirection(-42)
+2
+allLasers.setColour('hotpink')
+allLasers.setDirection(-47)
+2
+allLasers.setColour('white')
+allLasers.setDirection(-12)
+2
+allLasers.setColour('tomato')
+allLasers.setDirection(-17)
+2
+allLasers.setColour('gold')
+allLasers.setDirection(-22)
+2
+allLasers.setColour('yellowgreen')
+allLasers.setDirection(-27)
+2
+allLasers.setColour('slategray')
+allLasers.setDirection(-32)
+2
+allLasers.setColour('plum')
+allLasers.setDirection(-37)
+2
+allLasers.setColour('purple')
+allLasers.setDirection(-42)
+2
+allLasers.setColour('hotpink')
+allLasers.setDirection(-47)
